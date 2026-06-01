@@ -5,7 +5,8 @@ import pygame
 pygame.init()
 
 #Application window settings.
-resolution = (800,800)
+WINDOW_SIZE = 720
+resolution = (WINDOW_SIZE,WINDOW_SIZE)
 pygame.display.set_caption("Snake135")
 window = pygame.display.set_mode(resolution)
 windowWidth = window.get_width()
@@ -15,7 +16,9 @@ windowDisplay = 1
 
 #Variables
 userInput = "NONE"
-
+GRID_SIZE = 24
+CELL_SIZE = WINDOW_SIZE // GRID_SIZE
+debugging = False
 #Font
 font1 = pygame.font.SysFont("arcade classic", 50, bold = False)
 
@@ -53,6 +56,9 @@ while True:
                     userInput = "LEFT"
                 elif (event.key == pygame.K_RIGHT):
                     userInput = "RIGHT"
+                # enable/disable debugging
+                elif (event.key == pygame.K_g):
+                    debugging = not debugging
 
     #Main menu
     if (windowDisplay == 1):
@@ -62,6 +68,12 @@ while True:
     #Game
     if (windowDisplay == 2):
         window.fill("#000000")
+        if debugging:
+            for i in range(GRID_SIZE):
+                for j in range(GRID_SIZE):
+                    gridCell = pygame.Rect(i * CELL_SIZE, j * CELL_SIZE, CELL_SIZE, CELL_SIZE)
+                    pygame.draw.rect(window, (0, 0, 255), gridCell, 1)
+
         window.blit(gameText1, gameText1Center)
         gameText2 = font1.render(userInput, True, ("#FFFFFF"))
         gameText2Center = gameText2.get_rect(center = (windowWidth / 2, windowHeight / 2))
